@@ -1,18 +1,46 @@
 version: '3.7'
 
-volumes:
-    logs:
-        driver: local
-
 services:
-    slim:
-        image: php:7-alpine
-        working_dir: /var/www
-        command: php -S 0.0.0.0:8080 -t public
-        environment:
-            docker: "true"
-        ports:
-            - 8080:8080
-        volumes:
-            - .:/var/www
-            - logs:/var/www/logs
+  slim:
+    image: php:7-alpine
+    working_dir: /var/www
+    command: php -S 0.0.0.0:8080 -t public
+    environment:
+      docker: "true"
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/var/www
+      - logs:/var/www/logs
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: slim
+      MYSQL_ROOT_PASSWORD: Pa55w0rd
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-vol:/var/lib/mysql
+      - ./scripts:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: "mysqladmin ping -h localhost"
+      interval: 1s
+      timeout: 1s
+      retries: 60
+  phpmyadmin:
+    image: phpmyadmin
+    restart: on-failure
+    depends_on:
+      - mysql
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: Pa55w0rd
+
+volumes:
+  mysql-vol:
+  logs:
+    driver: local
