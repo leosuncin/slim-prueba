@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHP CI
 
 on:
   push:
@@ -10,6 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Setup PHP with pre-release PECL extension
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        tools: composer:v2
     - uses: actions/checkout@v2
     - name: Validate composer.json and composer.lock
       run: composer validate
