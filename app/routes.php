@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+use App\Application\Actions\Product\CreateProductAction;
+use App\Application\Actions\Product\EditProductAction;
+use App\Application\Actions\Product\ListProductsAction;
+use App\Application\Actions\Product\RemoveProductAction;
+use App\Application\Actions\Product\ViewProductAction;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -22,5 +27,13 @@ return function (App $app) {
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
+    });
+
+    $app->group('/products', function (Group $group) {
+        $group->get('', ListProductsAction::class);
+        $group->post('', CreateProductAction::class);
+        $group->get('/{id}', ViewProductAction::class);
+        $group->put('/{id}', EditProductAction::class);
+        $group->delete('/{id}', RemoveProductAction::class);
     });
 };

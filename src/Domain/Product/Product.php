@@ -38,19 +38,29 @@ class Product implements JsonSerializable
 
     /**
      * Product constructor.
-     * @param int $id
+     * @param int|null $id
      * @param string $name
      * @param string $description
      * @param string $image
      * @param float $price
      */
-    public function __construct(int $id, string $name, string $description, string $image, float $price)
+    public function __construct(?int $id, string $name, string $description, string $image, float $price)
     {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->image = $image;
         $this->price = $price;
+    }
+
+    /**
+     * Create a new product from form data
+     * @param object $data
+     * @return Product
+     */
+    public static function fromFormData(object $data): Product
+    {
+        return new self(null, $data->name, $data->description, $data->image, (float)$data->price);
     }
 
     /**
@@ -91,6 +101,29 @@ class Product implements JsonSerializable
     public function getPrice(): float
     {
         return $this->price;
+    }
+
+    /**
+     * Replace property values with form data
+     * @param object $data
+     */
+    public function updateUsingFormData(object $data)
+    {
+        if (isset($data->name)) {
+            $this->name = $data->name;
+        }
+
+        if (isset($data->description)) {
+            $this->description = $data->description;
+        }
+
+        if (isset($data->image)) {
+            $this->image = $data->image;
+        }
+
+        if (isset($data->price)) {
+            $this->price = (float)$data->price;
+        }
     }
 
     /**
