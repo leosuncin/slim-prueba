@@ -12,7 +12,6 @@ interface ProductRepository
     /**
      * @param Product $product
      * @return Product
-     * @throws ProductNotFoundException
      */
     public function saveOne(Product $product): Product;
 
