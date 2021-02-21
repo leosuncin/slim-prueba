@@ -1,14 +1,18 @@
 {
     "type": "object",
+    "additionalProperties": false,
     "properties": {
         "statusCode": {
-            "type": "number"
+            "type": "number",
+            "minimum": 100,
+            "excludeMaximum": 600
         },
         "data": {
             "type": "array",
             "items": [
                 {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
                         "id": {
                             "type": "number"

@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "statusCode": {
+            "type": "number",
+            "minimum": 100,
+            "excludeMaximum": 600
+        },
+        "error": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "BAD_REQUEST",
+                        "INSUFFICIENT_PRIVILEGES",
+                        "NOT_ALLOWED",
+                        "NOT_IMPLEMENTED",
+                        "RESOURCE_NOT_FOUND",
+                        "SERVER_ERROR",
+                        "UNAUTHENTICATED",
+                        "VALIDATION_ERROR",
+                        "VERIFICATION_ERROR"
+                    ]
+                }
+            }
+        }
+    },
+    "required": [
+        "statusCode",
+        "error"
+    ],
+    "title": "error"
+}

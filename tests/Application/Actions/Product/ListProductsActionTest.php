@@ -19,7 +19,7 @@ class ListProductsActionTest extends TestCase
         $json = json_decode($payload);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertJsonMatchesSchema($json, __DIR__ . '/products-schema.json');
+        $this->assertJsonMatchesSchema($json, 'tests/Common/products-schema.json');
         $this->assertSame($response->getStatusCode(), $json->statusCode);
     }
 }
