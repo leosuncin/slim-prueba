@@ -13,7 +13,7 @@ class CreateProductAction extends ProductAction
      */
     protected function action(): Response
     {
-        $data = $this->getFormData();
+        $data = $this->request->getParsedBody();
         $product = Product::fromFormData($data);
         $product = $this->productRepository->saveOne($product);
 

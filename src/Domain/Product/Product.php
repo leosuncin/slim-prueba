@@ -55,12 +55,19 @@ class Product implements JsonSerializable
 
     /**
      * Create a new product from form data
-     * @param object $data
+     * @param array $data
      * @return Product
      */
-    public static function fromFormData(object $data): Product
+    public static function fromFormData(array $data): Product
     {
-        return new self(null, $data->name, $data->description, $data->image, (float)$data->price);
+        [
+            'name' => $name,
+            'description' => $description,
+            'image' => $image,
+            'price' => $price,
+        ] = $data;
+
+        return new self(null, $name, $description, $image, (float)$price);
     }
 
     /**

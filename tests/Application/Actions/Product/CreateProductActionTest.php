@@ -22,22 +22,26 @@ class CreateProductActionTest extends TestCase
 
     public function testAction()
     {
-        $request = $this->createRequest('POST', '/products', ['HTTP_ACCEPT' => 'application/json', 'HTTP_CONTENT_TYPE' => 'application/json']);
-        $request->getBody()->write(json_encode([
+        $request = $this->createRequest(
+            'POST',
+            '/products',
+            [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ]
+        )
+        ->withParsedBody([
             'name' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
             'image' => $this->faker->imageUrl(),
             'price' => $this->faker->randomFloat(2, 1, 100),
-        ]));
+        ]);
         $request->getBody()->rewind();
         $response = $this->app->handle($request);
+        $response->getBody()->rewind();
 
-        $payload = (string)$response->getBody();
+        $payload = $response->getBody()->getContents();
         $json = json_decode($payload);
-
-        if ($response->getStatusCode() == 400) {
-            $this->markTestIncomplete('Fails to send JSON');
-        }
 
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertJsonMatchesSchema($json, 'tests/Common/product-schema.json');
